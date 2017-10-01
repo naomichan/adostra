@@ -56,6 +56,10 @@ class Client implements IHotsApiClient {
   };
   
   async getReplayPage(options: HotsApiOptions): Promise<IHotsApiResult> {
+    if(typeof(options.page) != "number") {
+      options.page = 0;
+    }
+    
     var query: string = this.generateQuery(options);
 
     return new Result(await this.get("https://hotsapi.net/api/v1/replays/paged" + query), options, this);

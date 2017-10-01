@@ -57,6 +57,9 @@ class Client {
     ;
     getReplayPage(options) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (typeof (options.page) != "number") {
+                options.page = 0;
+            }
             var query = this.generateQuery(options);
             return new Result(yield this.get("https://hotsapi.net/api/v1/replays/paged" + query), options, this);
         });
