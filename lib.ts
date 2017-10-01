@@ -55,23 +55,28 @@ class Client implements IHotsApiClient {
     return JSON.parse(response.body);
   };
   
-  async getReplayPage(options: HotsApiOptions): Promise<IHotsApiResult> {
+  async getReplayPage(options?: HotsApiOptions): Promise<IHotsApiResult> {
+    if(options == undefined) {
+      options = {page: 0};
+    }
+
     if(typeof(options.page) != "number") {
+
       options.page = 0;
     }
-    
+
     var query: string = this.generateQuery(options);
 
     return new Result(await this.get("https://hotsapi.net/api/v1/replays/paged" + query), options, this);
   }
   
-  async getReplay(id: number, options: HotsApiOptions): Promise<HotsApiReplay> {
+  async getReplay(id: number, options?: HotsApiOptions): Promise<HotsApiReplay> {
     var query: string = this.generateQuery(options);
 
     return await this.get("https://hotsapi.net/api/v1/replays/" + id + query);
   }
 
-  async getReplays(options: HotsApiOptions): Promise<Array<HotsApiReplay>> {
+  async getReplays(options?: HotsApiOptions): Promise<Array<HotsApiReplay>> {
     var query: string = this.generateQuery(options);
 
     return await this.get("https://hotsapi.net/api/v1/replays" + query);

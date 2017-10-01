@@ -57,6 +57,9 @@ class Client {
     ;
     getReplayPage(options) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (options == undefined) {
+                options = { page: 0 };
+            }
             if (typeof (options.page) != "number") {
                 options.page = 0;
             }
