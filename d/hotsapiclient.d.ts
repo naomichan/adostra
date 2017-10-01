@@ -9,8 +9,11 @@ interface HotsApiOptions {
   player?: string,
   hero?: string,
   with_players?: boolean,
-  page?: number,
   [key: string]: any
+}
+
+interface HotsApiOptionsWithPage extends HotsApiOptions {
+  page: number
 }
 
 interface IHotsApiResult {

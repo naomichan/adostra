@@ -4,7 +4,7 @@
 /// <reference path="d/hotsapiclient.d.ts" />
 
 class Result implements IHotsApiResult {
-  constructor(data: Array<HotsApiReplay>, options: HotsApiOptions, client: IHotsApiClient) {
+  constructor(data: Array<HotsApiReplay>, options: HotsApiOptionsWithPage, client: IHotsApiClient) {
     this.options = options;
     this.data = data;
     this.client = client;
@@ -12,13 +12,13 @@ class Result implements IHotsApiResult {
 
   client: IHotsApiClient
   data: Array<HotsApiReplay>;
-  options: HotsApiOptions;
+  options: HotsApiOptionsWithPage;
   
   async getPreviousPage(): Promise<IHotsApiResult> {
     if(this.data.length == 0 || this.options.page == 0) {
       return null;
     }
-    var newOptions: HotsApiOptions = JSON.parse(JSON.stringify(this.options));
+    var newOptions: HotsApiOptionsWithPage = JSON.parse(JSON.stringify(this.options));
     newOptions.page -= 1;
     return await this.client.getReplayPage(this.options);
   }
@@ -27,7 +27,7 @@ class Result implements IHotsApiResult {
     if(this.data.length == 0) {
       return null;
     }
-    var newOptions: HotsApiOptions = JSON.parse(JSON.stringify(this.options));
+    var newOptions: HotsApiOptionsWithPage = JSON.parse(JSON.stringify(this.options));
     newOptions.page += 1;
 
     return await this.client.getReplayPage(this.options);
@@ -55,13 +55,12 @@ class Client implements IHotsApiClient {
     return JSON.parse(response.body);
   };
   
-  async getReplayPage(options?: HotsApiOptions): Promise<IHotsApiResult> {
+  async getReplayPage(options?: HotsApiOptionsWithPage): Promise<IHotsApiResult> {
     if(options == undefined) {
       options = {page: 0};
     }
 
     if(typeof(options.page) != "number") {
-
       options.page = 0;
     }
 
