@@ -1,0 +1,28 @@
+{
+  "name": "hotsapiclient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/lib.js",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.12",
+    "@types/node": "^8.0.31",
+    "@types/request": "^2.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naomichan/hotsapiclient.git"
+  },
+  "author": "Yuki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naomichan/hotsapiclient/issues"
+  },
+  "homepage": "https://github.com/naomichan/hotsapiclient#readme"
+}
