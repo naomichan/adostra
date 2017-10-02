@@ -1,6 +1,6 @@
 # hotsapiclient
 
-A TypeScript ES6 library to interface with hotsapi.net's api.
+A TypeScript ES5 library to interface with hotsapi.net's api.
 
 ## usage
 

@@ -106,6 +106,10 @@ class Client implements IHotsApiClient {
 
     return await this.get("https://hotsapi.net/api/v1/replays" + query);
   }
+
+  public toString(): string {
+    return "HotsAPIClient.v1 version 1.0.0";
+  }
 }
 
 export = Client;
