@@ -20,6 +20,9 @@ class Result {
         }
         return ret;
     }
+    getReplays() {
+        return this.data.replays;
+    }
     getPreviousPage() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.data.replays.length == 0 || this.options.page == 0) {

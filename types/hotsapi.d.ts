@@ -21,7 +21,6 @@ interface HotsApiReplay {
   players?: Array<HotsApiPlayer>
 }
 
-
 interface HotsApiPaged {
   page?: number,
   page_count?: number,
