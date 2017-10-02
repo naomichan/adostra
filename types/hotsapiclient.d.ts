@@ -19,7 +19,7 @@ interface HotsApiOptionsWithPage extends HotsApiOptions {
 interface IHotsApiResult {
   getPreviousPage(): Promise<IHotsApiResult>;
   getNextPage(): Promise<IHotsApiResult>;
-  data: Array<HotsApiReplay>;
+  getReplays(): Array<HotsApiReplay>;
 }
 
 interface IHotsApiClient {

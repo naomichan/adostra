@@ -13,30 +13,37 @@ class Result {
         this.data = data;
         this.client = client;
     }
+    duplicateOptions() {
+        var ret;
+        for (var key in this.options) {
+            ret[key] = this.options[key];
+        }
+        return ret;
+    }
     getPreviousPage() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.data.length == 0 || this.options.page == 0) {
+            if (this.data.replays.length == 0 || this.options.page == 0) {
                 return null;
             }
-            var newOptions = JSON.parse(JSON.stringify(this.options));
-            newOptions.page -= 1;
+            var newOptions = this.duplicateOptions();
+            newOptions.page = (this.data.page || this.options.page) - 1;
             return yield this.client.getReplayPage(this.options);
         });
     }
     getNextPage() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.data.length == 0) {
+            if (this.data.replays.length == 0) {
                 return null;
             }
-            var newOptions = JSON.parse(JSON.stringify(this.options));
-            newOptions.page += 1;
+            var newOptions = this.duplicateOptions();
+            newOptions.page = (this.data.page || this.options.page) + 1;
             return yield this.client.getReplayPage(this.options);
         });
     }
 }
 const bluebird = require("bluebird");
-const request = require("request");
-let requestAsync = bluebird.promisify(request);
+const req = require("request");
+let request = bluebird.promisify(req);
 class Client {
     generateQuery(options) {
         var strings = new Array();
@@ -45,9 +52,19 @@ class Client {
         }
         return "?" + strings.join("&");
     }
+    post(url, replay) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var response = yield request({ url: url, method: 'POST', formData: { "replay": replay } });
+            if (response.statusCode != 200) {
+                return null;
+            }
+            return JSON.parse(response.body);
+        });
+    }
+    ;
     get(url) {
         return __awaiter(this, void 0, void 0, function* () {
-            var response = yield requestAsync({ url: url });
+            var response = yield request({ url: url, method: 'GET' });
             if (response.statusCode != 200) {
                 return null;
             }

@@ -20,3 +20,12 @@ interface HotsApiReplay {
   url: string,
   players?: Array<HotsApiPlayer>
 }
+
+
+interface HotsApiPaged {
+  page?: number,
+  page_count?: number,
+  total?: number,
+  per_page?: number,
+  replays: Array<HotsApiReplay>
+}

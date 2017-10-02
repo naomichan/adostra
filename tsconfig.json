@@ -10,7 +10,7 @@
         "paths": {
             "*": [
                 "node_modules/*",
-                "d/*"
+                "types/*"
             ]
         },
         "removeComments": true,
