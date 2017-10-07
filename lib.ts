@@ -1,7 +1,7 @@
 /// <reference types="node" />
 /// <reference types="request" />
 /// <reference types="bluebird" />
-/// <reference path="types/hotsapiclient.d.ts" />
+/// <reference path="types/adostra.d.ts" />
 
 class Result implements IHotsApiResult {
   constructor(data: HotsApiPaged, options: HotsApiOptionsWithPage, client: IHotsApiClient) {
@@ -51,8 +51,8 @@ class Result implements IHotsApiResult {
   }
 }
 
-import bluebird = require("bluebird");
-import req = require("request");
+import * as bluebird from "bluebird";
+import * as req from "request";
 let request = bluebird.promisify(req);
 
 class Client implements IHotsApiClient {
@@ -108,8 +108,8 @@ class Client implements IHotsApiClient {
   }
 
   public toString(): string {
-    return "HotsAPIClient.v1 version 1.0.0";
+    return "Adostra.v1 version 1.0.0";
   }
 }
 
-export = Client;
+export default Client;

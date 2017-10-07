@@ -1,11 +1,11 @@
-# hotsapiclient
+# adostra
 
-A TypeScript ES5 library to interface with hotsapi.net's api.
+A TypeScript ES6 library to interface with hotsapi.net's api.
 
 ## usage
 
 ```js
-var hotsapi = new (require("hotsapiclient"))();
+var hotsapi = new (require("adostra"))();
 
 hotsapi.getReplays().then(replays => {
   console.log(replays);

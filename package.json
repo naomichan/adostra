@@ -1,5 +1,5 @@
 {
-  "name": "hotsapiclient",
+  "name": "adostra",
   "version": "1.0.0",
   "description": "",
   "main": "dist/lib.js",
@@ -12,17 +12,16 @@
     "@types/node": "^8.0.31",
     "@types/request": "^2.0.3"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naomichan/hotsapiclient.git"
+    "url": "git+https://github.com/naomichan/adostra.git"
   },
-  "author": "Yuki",
+  "author": "Naomi",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/naomichan/hotsapiclient/issues"
+    "url": "https://github.com/naomichan/adostra/issues"
   },
-  "homepage": "https://github.com/naomichan/hotsapiclient#readme"
+  "homepage": "https://github.com/naomichan/adostra#readme",
+  "typeScriptVersion": "2.5"
 }
