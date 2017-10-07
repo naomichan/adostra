@@ -45,9 +45,9 @@ class Result {
         });
     }
 }
-const bluebird = require("bluebird");
+const bluebird_1 = require("bluebird");
 const req = require("request");
-let request = bluebird.promisify(req);
+let request = bluebird_1.promisify(req);
 class Client {
     generateQuery(options) {
         var strings = new Array();
@@ -101,7 +101,7 @@ class Client {
         });
     }
     toString() {
-        return "HotsAPIClient.v1 version 1.0.0";
+        return "Adostra.v1 version 1.0.0";
     }
 }
 exports.default = Client;

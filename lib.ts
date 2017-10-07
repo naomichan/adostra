@@ -51,9 +51,9 @@ class Result implements IHotsApiResult {
   }
 }
 
-import * as bluebird from "bluebird";
+import { promisify } from "bluebird";
 import * as req from "request";
-let request = bluebird.promisify(req);
+let request = promisify(req);
 
 class Client implements IHotsApiClient {
 
