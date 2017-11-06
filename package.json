@@ -4,13 +4,15 @@
   "description": "",
   "main": "dist/lib.js",
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.1",
+    "nydus": "git+https://github.com/naomichan/nydus.git",
     "request": "^2.83.0"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.12",
-    "@types/node": "^8.0.31",
-    "@types/request": "^2.0.3"
+    "@types/bluebird": "^3.5.18",
+    "@types/node": "^8.0.48",
+    "@types/nydus": "git+https://github.com/naomichan/nydus.git#types",
+    "@types/request": "^2.0.7"
   },
   "scripts": {},
   "repository": {
