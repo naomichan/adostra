@@ -1,5 +1,5 @@
 /// <reference path="../types/hotsapi.d.ts" />
-import { HotsApiHeroOptoins, HotsApiReplayOptions, HotsApiTalentOptions, HotsApiMapOptions } from './structs';
+import { HotsApiHeroOptoins, HotsApiReplayOptions, HotsApiReplayUploadOptions, HotsApiTalentOptions, HotsApiMapOptions } from './structs';
 export declare class HotsAPIResult {
     constructor(data: HotsApiPaged, options: HotsApiReplayOptions, client: HotsAPIClient);
     private client;
@@ -18,17 +18,17 @@ export declare class HotsAPIClient {
     getReplay(options?: HotsApiReplayOptions): Promise<HotsApiReplay | HotsAPIResult | null>;
     getReplays(options?: HotsApiReplayOptions): Promise<Array<HotsApiReplay> | HotsApiReplay | HotsAPIResult | null>;
     getAbility(options?: HotsApiHeroOptoins): Promise<HotsApiHeroAbility | null>;
-    getHero(options?: HotsApiHeroOptoins): Promise<HotsApiHero | HotsApiHeroAbility | null>;
+    getHero(options?: HotsApiHeroOptoins): Promise<Array<HotsApiHero> | HotsApiHero | HotsApiHeroAbility | null>;
     getHeroes(options?: HotsApiHeroOptoins): Promise<Array<HotsApiHero> | HotsApiHero | HotsApiHeroAbility | null>;
     getTalent(options: HotsApiTalentOptions): Promise<HotsApiTalent | null>;
-    getMap(options?: HotsApiMapOptions): Promise<HotsApiMap | null>;
+    getMap(options?: HotsApiMapOptions): Promise<Array<HotsApiMap> | HotsApiMap | null>;
     getMaps(options?: HotsApiMapOptions): Promise<Array<HotsApiMap> | HotsApiMap | null>;
     private static GUIDByteOrder;
     private static GUIDDashPositions;
     private fingerprint(data);
-    getFingerprint(replayFile: string): Promise<string | null>;
-    replayFingerprintV3(replayFile: string): Promise<HotsApiFingerprintExistence | null>;
-    uploadReplay(replayFile: string): Promise<HotsApiReplayUpload | boolean>;
+    getFingerprint(replayFile: string): Promise<string>;
+    replayFingerprintV3(replayFile: string): Promise<HotsApiFingerprintExistence>;
+    uploadReplay(replayFile: string, options?: HotsApiReplayUploadOptions): Promise<HotsApiReplayUpload | boolean>;
     toString(): string;
     private UA();
 }

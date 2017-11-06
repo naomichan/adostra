@@ -10,9 +10,9 @@
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.18",
-    "@types/node": "^8.0.48",
+    "@types/node": "^8.0.51",
     "@types/nydus": "git+https://github.com/naomichan/nydus.git#types",
-    "@types/request": "^2.0.7"
+    "@types/request": "^2.0.8"
   },
   "scripts": {},
   "repository": {

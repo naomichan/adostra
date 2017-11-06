@@ -11,6 +11,10 @@ export interface HotsApiReplayOptions {
     page?: number;
     [key: string]: any;
 }
+export interface HotsApiReplayUploadOptions {
+    uploadToHotslogs?: boolean;
+    [key: string]: any;
+}
 export interface HotsApiHeroOptoins {
     hero?: string;
     ability?: string;

@@ -3,7 +3,7 @@
 /// <reference types="bluebird" />
 /// <reference path="../types/hotsapi.d.ts" />
 
-import { HotsApiHeroOptoins, HotsApiReplayOptions, HotsApiTalentOptions, HotsApiMapOptions } from './structs';
+import { HotsApiHeroOptoins, HotsApiReplayOptions, HotsApiReplayUploadOptions, HotsApiTalentOptions, HotsApiMapOptions } from './structs';
 import { Parser, GameType } from "nydus";
 import { createHash } from "crypto";
 
@@ -148,9 +148,9 @@ export class HotsAPIClient {
     return await this.get("https://hotsapi.net/api/v1/heroes/" + options.hero + "/abilities/" + options.ability);
   }
   
-  public async getHero(options?: HotsApiHeroOptoins): Promise<HotsApiHero | HotsApiHeroAbility | null> {
+  public async getHero(options?: HotsApiHeroOptoins): Promise<Array<HotsApiHero> | HotsApiHero | HotsApiHeroAbility | null> {
     if(options === undefined || options.hero === undefined) {
-      return null;
+      return await this.getHeroes(options);
     }
 
     if(options.ability !== undefined) {
@@ -181,9 +181,9 @@ export class HotsAPIClient {
     return await this.get("https://hotsapi.net/api/v1/talents/" + options.talent);
   }
   
-  public async getMap(options?: HotsApiMapOptions): Promise<HotsApiMap | null> {
+  public async getMap(options?: HotsApiMapOptions): Promise<Array<HotsApiMap> | HotsApiMap | null> {
     if(options === undefined || options.map === undefined) {
-      return null;
+      return await this.getMaps(options);
     }
 
     return await this.get("https://hotsapi.net/api/v1/maps/" + options.map);
@@ -201,11 +201,11 @@ export class HotsAPIClient {
   private static GUIDDashPositions = [3, 5, 7, 9];
 
   private fingerprint(data: string): string {
-    const bytes: Buffer = createHash("md5").update(data, "utf8").digest();
+    const bytes: Buffer = createHash("md5").update(data, "ascii").digest();
 
     let result = "";
     for(let i = 0; i < 16; ++i) {
-      result += bytes.readUInt8(HotsAPIClient.GUIDByteOrder[i]).toString(16);
+      result += ("0" + bytes.readUInt8(HotsAPIClient.GUIDByteOrder[i]).toString(16)).substr(-2);
       if(HotsAPIClient.GUIDDashPositions.includes(i)) {
         result += "-";
       }
@@ -214,7 +214,7 @@ export class HotsAPIClient {
     return result;
   }
 
-  public async getFingerprint(replayFile: string): Promise<string | null> {
+  public async getFingerprint(replayFile: string): Promise<string> {
     const Nydus = new Parser(GameType.HERO);
     await Nydus.reload();
     try {
@@ -226,23 +226,23 @@ export class HotsAPIClient {
       for(let i = 0; i < details.m_playerList.length; ++i) {
         ids.push(details.m_playerList[i].m_toon.m_id);
       }
-      ids = ids.sort();
+      ids = ids.sort((a, b) => a - b);
       return this.fingerprint(ids.join("") + initData.m_syncLobbyState.m_gameDescription.m_randomValue);
-    } catch {
-      return null;
+    } catch (err) {
+      throw err;
     }
   }
   
-  public async replayFingerprintV3(replayFile: string): Promise<HotsApiFingerprintExistence | null> {
-    const fingerprint = await this.getFingerprint(replayFile);
-    if(fingerprint == null) {
-      return null;
+  public async replayFingerprintV3(replayFile: string): Promise<HotsApiFingerprintExistence> {
+    try {
+      const fingerprint = await this.getFingerprint(replayFile);
+      return this.get("https://hotsapi.net/api/v1/replays/fingerprints/v3/" + fingerprint);
+    } catch(err) {
+      throw err;
     }
-
-    return this.get("https://hotsapi.net/api/v1/fingerprints/v3/" + fingerprint);
   }
 
-  public async uploadReplay(replayFile: string): Promise<HotsApiReplayUpload | boolean> {
+  public async uploadReplay(replayFile: string, options?: HotsApiReplayUploadOptions): Promise<HotsApiReplayUpload | boolean> {
     const existence = await this.replayFingerprintV3(replayFile);
     if(existence === null) {
       return false;
@@ -253,7 +253,9 @@ export class HotsAPIClient {
 
     const file = await readFileAsync(replayFile);
 
-    return await this.post("https://hotsapi.net/api/v1/replays", file);
+    const query: string = this.generateQuery(options);
+
+    return await this.post("https://hotsapi.net/api/v1/replays" + query, file);
   }
 
   public toString(): string {

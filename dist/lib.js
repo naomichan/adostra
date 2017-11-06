@@ -145,7 +145,7 @@ class HotsAPIClient {
     getHero(options) {
         return __awaiter(this, void 0, void 0, function* () {
             if (options === undefined || options.hero === undefined) {
-                return null;
+                return yield this.getHeroes(options);
             }
             if (options.ability !== undefined) {
                 return yield this.getAbility(options);
@@ -177,7 +177,7 @@ class HotsAPIClient {
     getMap(options) {
         return __awaiter(this, void 0, void 0, function* () {
             if (options === undefined || options.map === undefined) {
-                return null;
+                return yield this.getMaps(options);
             }
             return yield this.get("https://hotsapi.net/api/v1/maps/" + options.map);
         });
@@ -191,10 +191,10 @@ class HotsAPIClient {
         });
     }
     fingerprint(data) {
-        const bytes = crypto_1.createHash("md5").update(data, "utf8").digest();
+        const bytes = crypto_1.createHash("md5").update(data, "ascii").digest();
         let result = "";
         for (let i = 0; i < 16; ++i) {
-            result += bytes.readUInt8(HotsAPIClient.GUIDByteOrder[i]).toString(16);
+            result += ("0" + bytes.readUInt8(HotsAPIClient.GUIDByteOrder[i]).toString(16)).substr(-2);
             if (HotsAPIClient.GUIDDashPositions.includes(i)) {
                 result += "-";
             }
@@ -214,24 +214,26 @@ class HotsAPIClient {
                 for (let i = 0; i < details.m_playerList.length; ++i) {
                     ids.push(details.m_playerList[i].m_toon.m_id);
                 }
-                ids = ids.sort();
+                ids = ids.sort((a, b) => a - b);
                 return this.fingerprint(ids.join("") + initData.m_syncLobbyState.m_gameDescription.m_randomValue);
             }
-            catch (_a) {
-                return null;
+            catch (err) {
+                throw err;
             }
         });
     }
     replayFingerprintV3(replayFile) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fingerprint = yield this.getFingerprint(replayFile);
-            if (fingerprint == null) {
-                return null;
+            try {
+                const fingerprint = yield this.getFingerprint(replayFile);
+                return this.get("https://hotsapi.net/api/v1/replays/fingerprints/v3/" + fingerprint);
             }
-            return this.get("https://hotsapi.net/api/v1/fingerprints/v3/" + fingerprint);
+            catch (err) {
+                throw err;
+            }
         });
     }
-    uploadReplay(replayFile) {
+    uploadReplay(replayFile, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const existence = yield this.replayFingerprintV3(replayFile);
             if (existence === null) {
@@ -241,7 +243,8 @@ class HotsAPIClient {
                 return true;
             }
             const file = yield readFileAsync(replayFile);
-            return yield this.post("https://hotsapi.net/api/v1/replays", file);
+            const query = this.generateQuery(options);
+            return yield this.post("https://hotsapi.net/api/v1/replays" + query, file);
         });
     }
     toString() {
