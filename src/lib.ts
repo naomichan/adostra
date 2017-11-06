@@ -220,8 +220,8 @@ export class HotsAPIClient {
     try {
       const Replay = await Nydus.loadReplay(replayFile);
       await Replay.loadProtocol();
-      let details = await Replay.parseDetails();
-      let initData = await Replay.parseInitData();
+      let details = Replay.parseDetails();
+      let initData = Replay.parseInitData();
       let ids: Array<any> = new Array<any>();
       for(let i = 0; i < details.m_playerList.length; ++i) {
         ids.push(details.m_playerList[i].m_toon.m_id);
